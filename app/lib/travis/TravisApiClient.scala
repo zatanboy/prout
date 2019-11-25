@@ -4,7 +4,7 @@ import java.net.URLEncoder
 
 import com.madgag.okhttpscala._
 import com.madgag.scalagithub.model.Repo
-import com.netaporter.uri.Uri
+import io.lemonlabs.uri.Url
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.LazyLogging
 import lib.travis.TravisApi.BuildResponse.CompletedBuildStates
@@ -63,7 +63,7 @@ object TravisApi {
 
 case class TravisApiClient(offering: TravisCIOffering, authToken: String) extends LazyLogging {
 
-  val baseEndpoint: Uri = offering.baseApiEndpoint
+  val baseEndpoint: Url = offering.baseApiEndpoint
 
   val headers = Headers.of((DefaultJsonApiHeaders :+ "Authorization" -> s"token $authToken").toMap.asJava)
 
@@ -111,18 +111,18 @@ case class TravisApiClient(offering: TravisCIOffering, authToken: String) extend
 
 sealed trait TravisCIOffering {
   val name: String
-  val baseApiEndpoint: Uri
+  val baseApiEndpoint: Url
 }
 
 object TravisCIOffering {
   case object OpenSource extends TravisCIOffering {
     val name = "opensource"
-    val baseApiEndpoint = Uri.parse("https://api.travis-ci.org")
+    val baseApiEndpoint = Url.parse("https://api.travis-ci.org")
   }
 
   case object Commercial extends TravisCIOffering {
     val name = "commercial"
-    val baseApiEndpoint = Uri.parse("https://api.travis-ci.com")
+    val baseApiEndpoint = Url.parse("https://api.travis-ci.com")
   }
 
   def forRepo(repo: Repo): TravisCIOffering = if (repo.`private`) Commercial else OpenSource

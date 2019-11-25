@@ -1,7 +1,7 @@
 package lib.travis
 
 import com.madgag.scalagithub.model.Status
-import com.netaporter.uri.Uri
+import io.lemonlabs.uri.Url
 import com.typesafe.scalalogging.LazyLogging
 import lib.PostDeployActions.GitHubCompletionStates
 import play.api.libs.json.{JsObject, Json}
